@@ -11,5 +11,4 @@ public class JwtResponseDto {
     private String token;
     private String email;
     private String password;
-
 }
