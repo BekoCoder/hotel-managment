@@ -33,13 +33,12 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
                 .setSigningKey(getSignInKey())
                 .parseClaimsJws(token)
                 .getBody();
-
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -53,7 +52,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenValidity))
-                .signWith(SignatureAlgorithm.HS512, getSignInKey())
+                .signWith(SignatureAlgorithm.HS256, getSignInKey())
                 .compact();
     }
 
