@@ -11,7 +11,7 @@ public interface UserService {
 
     JwtResponseDto login(JwtRequestDto requestDto);
 
-    UserDto update(UserDto userDto);
+    UserDto update(UserDto userDto, Long userId);
 
     List<UserDto> getAllUsers();
 

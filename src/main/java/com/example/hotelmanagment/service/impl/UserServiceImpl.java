@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,23 +56,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(UserDto userDto) {
-        return null;
+    public UserDto update(UserDto userDto, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
+        if(user.getIsDeleted()==1){
+            throw new CustomException("Foydalanuvchi topilmadi!!!");
+        }
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(user);
+        return mapper.map(user, UserDto.class);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return List.of();
+        List<User> users = userRepository.findByIsDeleted(0);
+        if(users.isEmpty()){
+            throw new CustomException("Ma'lumot topilmadi!!!");
+        }
+        return users.stream().map(user-> mapper.map(user, UserDto.class)).collect(Collectors.toList());
+
     }
 
     @Override
     public void deleteById(Long id) {
-
+        User user = userRepository.findById(id).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
+        if(user.getIsDeleted()==1){
+            throw new CustomException("Foydalanuvchi o'chirilgan!!!");
+        }
+        user.setIsDeleted(1);
+        userRepository.save(user);
     }
 
     @Override
     public UserDto getUserById(Long id) {
-        return null;
+        User user = userRepository.findById(id).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
+        if(user.getIsDeleted()==1){
+            throw new CustomException("Foydalanuvchi o'chirilgan!!!");
+        }
+        return mapper.map(user, UserDto.class);
     }
 
 

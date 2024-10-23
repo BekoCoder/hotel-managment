@@ -47,6 +47,7 @@ public class SecurityConfig {
                         authorizeRequests ->authorizeRequests
                                 .requestMatchers(pathAnonymous).permitAll()
                                 .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/admin/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
