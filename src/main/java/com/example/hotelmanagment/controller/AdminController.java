@@ -20,7 +20,6 @@ public class AdminController {
     private final UserService userService;
 
 
-
     @Operation(summary = "Userlarni id orqali yangilash")
     @PutMapping("/update/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userDto) {
@@ -45,7 +44,6 @@ public class AdminController {
         log.trace("Returned to fron-end: {} ", userById);
         return ResponseEntity.ok(userById);
     }
-
 
 
     @Operation(summary = "Barcha userlarni olish")

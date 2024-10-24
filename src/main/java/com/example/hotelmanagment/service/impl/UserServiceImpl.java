@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new CustomException("Parol yoki email noto'g'ri kiritildi!!!");
         }
-        if(user.getIsDeleted()==1){
+        if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi topilmadi!!!");
         }
         String token = jwtService.generateToken(user);
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto update(UserDto userDto, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
-        if(user.getIsDeleted()==1){
+        if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi topilmadi!!!");
         }
         user.setEmail(userDto.getEmail());
@@ -70,17 +70,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findByIsDeleted(0);
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             throw new CustomException("Ma'lumot topilmadi!!!");
         }
-        return users.stream().map(user-> mapper.map(user, UserDto.class)).collect(Collectors.toList());
+        return users.stream().map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
 
     }
 
     @Override
     public void deleteById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
-        if(user.getIsDeleted()==1){
+        if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi o'chirilgan!!!");
         }
         user.setIsDeleted(1);
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
-        if(user.getIsDeleted()==1){
+        if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi o'chirilgan!!!");
         }
         return mapper.map(user, UserDto.class);

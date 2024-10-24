@@ -36,7 +36,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public HotelDto getById(Long id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
-        if(hotel == null) {
+        if (hotel == null) {
             throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
         }
         return mapper.map(hotel, HotelDto.class);
@@ -51,10 +51,10 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public HotelDto updateById(Long id, HotelDto hotelDto) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
-        if(hotel == null) {
+        if (hotel == null) {
             throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
         }
-        if(isExistHotel(hotelDto.getName())) {
+        if (isExistHotel(hotelDto.getName())) {
             throw new CustomException("Bunday mehmonxona mavjud");
         }
         hotel.setName(hotelDto.getName());

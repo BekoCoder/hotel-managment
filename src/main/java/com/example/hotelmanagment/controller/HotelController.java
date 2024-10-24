@@ -31,9 +31,9 @@ public class HotelController {
 
     @Operation(summary = "Mehmonxonani yangilash")
     @PutMapping("/update/{id}")
-    public ResponseEntity<HotelDto> update(@PathVariable("id") Long id ,@RequestBody HotelDto hotelDto ) {
-        log.trace("Accessing Update /hotel/update/{}" ,id);
-        return ResponseEntity.ok(hotelService.updateById(id,hotelDto));
+    public ResponseEntity<HotelDto> update(@PathVariable("id") Long id, @RequestBody HotelDto hotelDto) {
+        log.trace("Accessing Update /hotel/update/{}", id);
+        return ResponseEntity.ok(hotelService.updateById(id, hotelDto));
     }
 
     @Operation(summary = "Id orqali olish")
