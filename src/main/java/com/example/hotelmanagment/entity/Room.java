@@ -17,8 +17,8 @@ import java.util.List;
 @Entity
 @Table(name = "room")
 public class Room extends AbstractEntity {
-    private Integer number;
-    private Boolean isActive = false;
+    private Integer roomNumber;
+    private Boolean isActive = true;
     private Double price;
     private String description;
 

@@ -2,7 +2,6 @@ package com.example.hotelmanagment.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.Setter;
 
 @Data
 @Schema(description = "User bo'yicha ma'lumotlar")
