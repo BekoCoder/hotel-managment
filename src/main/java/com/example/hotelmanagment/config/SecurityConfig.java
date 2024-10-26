@@ -50,6 +50,7 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/**").permitAll()
                                 .requestMatchers("/user/**").permitAll()
                                 .requestMatchers("/hotel/**").permitAll()
+                                .requestMatchers("/room/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)

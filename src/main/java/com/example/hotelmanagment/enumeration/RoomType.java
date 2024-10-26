@@ -3,7 +3,7 @@ package com.example.hotelmanagment.enumeration;
 public enum RoomType {
     LUX("Luks xona"),
     COMFORT("Komfort xona"),
-    SIMPLE("Oddiy xona");
+    STANDART("Oddiy xona");
 
 
     private final String name;
