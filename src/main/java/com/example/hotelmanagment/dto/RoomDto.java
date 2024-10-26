@@ -1,6 +1,5 @@
 package com.example.hotelmanagment.dto;
 
-import com.example.hotelmanagment.enumeration.RoomType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

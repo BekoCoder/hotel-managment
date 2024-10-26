@@ -2,10 +2,7 @@ package com.example.hotelmanagment.entity;
 
 import com.example.hotelmanagment.enumeration.RoomType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "room")
+@Builder
 public class Room extends AbstractEntity {
     private Integer roomNumber;
     private Boolean isActive = true;
