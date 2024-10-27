@@ -11,7 +11,6 @@ import com.example.hotelmanagment.repository.HotelRepository;
 import com.example.hotelmanagment.repository.RoomRepository;
 import com.example.hotelmanagment.service.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
-    private final ModelMapper mapper;
     private final HotelRepository hotelRepository;
     private final RoomMapper roomMapper;
 
@@ -49,7 +47,7 @@ public class RoomServiceImpl implements RoomService {
             throw new CustomException("Bunday turdagi xonalar mavjud emas!!! ");
         }
 
-        return mapper.map(roomRepository.save(room), RoomDto.class);
+        return roomMapper.toDto(roomRepository.save(room));
     }
 
     @Override
@@ -58,7 +56,7 @@ public class RoomServiceImpl implements RoomService {
         if (Objects.isNull(room)) {
             throw new RoomNotFoundException("Bunday xona topilmadi!!! ");
         }
-        return mapper.map(room, RoomDto.class);
+        return roomMapper.toDto(room);
     }
 
     @Override
@@ -69,7 +67,7 @@ public class RoomServiceImpl implements RoomService {
         }
         room.setRoomNumber(roomDto.getRoomNumber());
         room.setPrice(roomDto.getPrice());
-        return mapper.map(roomRepository.save(room), RoomDto.class);
+        return roomMapper.toDto(roomRepository.save(room));
 
     }
 
@@ -84,14 +82,14 @@ public class RoomServiceImpl implements RoomService {
         Optional<Room> room = roomRepository.findById(roomId);
         if (hotel.isPresent() && room.isPresent()) {
             room.get().setHotel(hotel.get());
-            return mapper.map(roomRepository.save(room.get()), RoomDto.class);
+            return roomMapper.toDto(roomRepository.save(room.get()));
         }
         throw new CustomException("Bunday xona topilmadi!!! ");
     }
 
     @Override
     public Page<RoomDto> getAllRooms(Pageable pageable) {
-        return roomRepository.findAll(pageable).map(room -> mapper.map(room, RoomDto.class));
+        return roomRepository.findAll(pageable).map(roomMapper::toDto);
     }
 
     private boolean isExistRoom(Integer number) {
