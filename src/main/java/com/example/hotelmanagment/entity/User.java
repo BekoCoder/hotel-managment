@@ -4,10 +4,7 @@ import com.example.hotelmanagment.enumeration.UserRoles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@Builder
 public class User extends AbstractEntity implements Serializable, UserDetails {
 
     private String firstName;
@@ -36,7 +34,7 @@ public class User extends AbstractEntity implements Serializable, UserDetails {
     private Integer isDeleted = 0;
 
     @Enumerated(value = EnumType.STRING)
-    private List<UserRoles> roles;
+    private List<UserRoles> roles=new ArrayList<>();
 
 
     @OneToMany(fetch = FetchType.LAZY)

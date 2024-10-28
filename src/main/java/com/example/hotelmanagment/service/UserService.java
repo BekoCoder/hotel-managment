@@ -7,7 +7,7 @@ import com.example.hotelmanagment.dto.UserDto;
 import java.util.List;
 
 public interface UserService {
-    JwtResponseDto save(UserDto userDto);
+    UserDto save(UserDto userDto);
 
     JwtResponseDto login(JwtRequestDto requestDto);
 

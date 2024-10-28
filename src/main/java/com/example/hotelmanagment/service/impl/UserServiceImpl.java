@@ -6,6 +6,7 @@ import com.example.hotelmanagment.dto.UserDto;
 import com.example.hotelmanagment.entity.User;
 import com.example.hotelmanagment.exceptions.CustomException;
 import com.example.hotelmanagment.jwt.JwtService;
+import com.example.hotelmanagment.mapper.UserMapper;
 import com.example.hotelmanagment.repository.UserRepository;
 import com.example.hotelmanagment.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,13 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserMapper userMapper;
 
 
     @Override
-    public JwtResponseDto save(UserDto userDto) {
-        User user = mapper.map(userDto, User.class);
+    public UserDto save(UserDto userDto) {
+//        User user = mapper.map(userDto, User.class);
+        User user = userMapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         if (checkEmail(user.getEmail())) {
             throw new CustomException("Bunday foydalanuvchi oldin ro'yhatdan o'tgan!!! ");
@@ -35,7 +38,7 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("Parol uzunligi 5 va 16 uzunlik orasida bo'lishi kerak");
         }
         userRepository.save(user);
-        return mapper.map(user, JwtResponseDto.class);
+        return userMapper.toDto(user);
     }
 
     @Override
