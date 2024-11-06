@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "room")
-@Builder
 public class Room extends AbstractEntity {
     private Integer roomNumber;
     private Boolean isActive = true;

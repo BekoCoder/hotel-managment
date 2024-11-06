@@ -1,13 +1,13 @@
 package com.example.hotelmanagment.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Schema(description = "Xona bo'yicha ma'lumotlar")
 public class RoomDto {
     @Schema(description = "xona raqami")
@@ -18,5 +18,5 @@ public class RoomDto {
     private String description;
 
     @Schema(description = "xona turi")
-    private String roomType;
+    private String  roomType;
 }
