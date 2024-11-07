@@ -1,5 +1,8 @@
 package com.example.hotelmanagment.enumeration;
 
+import lombok.Getter;
+
+@Getter
 public enum RoomType {
     LUX("Luks xona"),
     COMFORT("Komfort xona"),
@@ -12,7 +15,4 @@ public enum RoomType {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 }

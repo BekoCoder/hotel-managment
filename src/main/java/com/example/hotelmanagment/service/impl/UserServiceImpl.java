@@ -4,9 +4,9 @@ import com.example.hotelmanagment.dto.JwtRequestDto;
 import com.example.hotelmanagment.dto.JwtResponseDto;
 import com.example.hotelmanagment.dto.UserDto;
 import com.example.hotelmanagment.entity.User;
+import com.example.hotelmanagment.enumeration.UserRoles;
 import com.example.hotelmanagment.exceptions.CustomException;
 import com.example.hotelmanagment.jwt.JwtService;
-import com.example.hotelmanagment.mapper.UserMapper;
 import com.example.hotelmanagment.repository.UserRepository;
 import com.example.hotelmanagment.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,13 +25,13 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final UserMapper userMapper;
 
 
     @Override
     public UserDto save(UserDto userDto) {
-//        User user = mapper.map(userDto, User.class);
-        User user = userMapper.toEntity(userDto);
+        User user = mapper.map(userDto, User.class);
+        user.setIsDeleted(0);
+        user.setRoles(List.of(UserRoles.USER));
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         if (checkEmail(user.getEmail())) {
             throw new CustomException("Bunday foydalanuvchi oldin ro'yhatdan o'tgan!!! ");
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("Parol uzunligi 5 va 16 uzunlik orasida bo'lishi kerak");
         }
         userRepository.save(user);
-        return userMapper.toDto(user);
+        return mapper.map(user, UserDto.class);
     }
 
     @Override
@@ -92,11 +93,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
-        if (user.getIsDeleted() == 1) {
-            throw new CustomException("Foydalanuvchi o'chirilgan!!!");
+        Optional<User> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            return mapper.map(byId.get(), UserDto.class);
         }
-        return mapper.map(user, UserDto.class);
+        throw new CustomException("Foydalanuvchi topilmadi!!!");
     }
 
 

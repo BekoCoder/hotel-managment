@@ -23,7 +23,6 @@ import java.util.Optional;
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository;
-//    private final RoomMapper roomMapper;
     private final ModelMapper roomMapper;
 
     @Override
@@ -32,17 +31,17 @@ public class RoomServiceImpl implements RoomService {
         if (isExistRoom(roomDto.getRoomNumber())) {
             throw new RoomNotFoundException("Bunday raqamli xona mavjud!!! ");
         }
-        if (roomDto.getRoomType().equals(RoomType.LUX)) {
-            room.setType(RoomType.valueOf(roomDto.getRoomType()));
-        } else if (roomDto.getRoomType().equals(RoomType.COMFORT)) {
-            room.setType(RoomType.valueOf(roomDto.getRoomType()));
-        } else if (roomDto.getRoomType().equals( RoomType.STANDART)) {
-            room.setType(RoomType.valueOf(roomDto.getRoomType()));
+        if (Objects.equals(roomDto.getType(), RoomType.LUX)) {
+            room.setType(RoomType.valueOf(String.valueOf(roomDto.getType())));
+        } else if (Objects.equals(roomDto.getType(), RoomType.COMFORT)) {
+            room.setType(RoomType.valueOf(String.valueOf(roomDto.getType())));
+        } else if (Objects.equals(roomDto.getType(), RoomType.STANDART)) {
+            room.setType(RoomType.valueOf(String.valueOf(roomDto.getType())));
         } else {
             throw new CustomException("Bunday turdagi xonalar mavjud emas!!! ");
         }
-            roomRepository.save(room);
-        return roomMapper.map(room, RoomDto.class);
+
+        return roomMapper.map(roomRepository.save(room), RoomDto.class);
     }
 
     @Override

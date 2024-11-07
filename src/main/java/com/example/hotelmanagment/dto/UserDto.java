@@ -1,13 +1,12 @@
 package com.example.hotelmanagment.dto;
 
+import com.example.hotelmanagment.enumeration.UserRoles;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+import java.util.List;
+
+@Data
 @Schema(description = "User bo'yicha ma'lumotlar")
 public class UserDto {
 
@@ -24,7 +23,7 @@ public class UserDto {
     private String password;
 
     @Schema(description = "Role")
-    private String role;
+    private List<UserRoles> roles;
 
 
 }

@@ -1,13 +1,12 @@
 package com.example.hotelmanagment.dto;
 
+import com.example.hotelmanagment.enumeration.RoomType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Schema(description = "Xona bo'yicha ma'lumotlar")
 public class RoomDto {
     @Schema(description = "xona raqami")
@@ -18,5 +17,7 @@ public class RoomDto {
     private String description;
 
     @Schema(description = "xona turi")
-    private String  roomType;
+    @Enumerated(EnumType.STRING)
+    private RoomType type;
+
 }

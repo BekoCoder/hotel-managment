@@ -34,7 +34,7 @@ public class User extends AbstractEntity implements Serializable, UserDetails {
     private Integer isDeleted = 0;
 
     @Enumerated(value = EnumType.STRING)
-    private List<UserRoles> roles=new ArrayList<>();
+    private List<UserRoles> roles;
 
 
     @OneToMany(fetch = FetchType.LAZY)
