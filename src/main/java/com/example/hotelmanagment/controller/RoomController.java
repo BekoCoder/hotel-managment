@@ -1,12 +1,9 @@
 package com.example.hotelmanagment.controller;
 
-import com.example.hotelmanagment.dto.HotelDto;
 import com.example.hotelmanagment.dto.RoomDto;
-import com.example.hotelmanagment.repository.RoomRepository;
 import com.example.hotelmanagment.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,14 +31,14 @@ public class RoomController {
     @Operation(summary = "Xonalarni yangilash")
     @PutMapping("/update/{id}")
     public ResponseEntity<RoomDto> updateRoom(@RequestBody RoomDto roomDto, @PathVariable Long id) {
-        log.trace("Accessing Room /room/update/{}" , id);
+        log.trace("Accessing Room /room/update/{}", id);
         return ResponseEntity.ok(roomService.update(roomDto, id));
     }
 
     @Operation(summary = "Id orqali xonani olish")
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<RoomDto> getRoomById(@PathVariable Long id) {
-        log.trace("Accessing Room /room/get/{}" , id);
+        log.trace("Accessing Room /room/get/{}", id);
         return ResponseEntity.ok(roomService.getById(id));
     }
 
@@ -57,7 +54,7 @@ public class RoomController {
     @Operation(summary = "id orqali o'chirish")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteRoom(@PathVariable Long id) {
-        log.trace("Accessing Room /room/delete/{}" , id);
+        log.trace("Accessing Room /room/delete/{}", id);
         roomService.delete(id);
         return ResponseEntity.ok(Boolean.TRUE);
     }
@@ -67,8 +64,6 @@ public class RoomController {
     public ResponseEntity<RoomDto> addRoomToHotel(@PathVariable Long hotelId, @PathVariable Long roomId) {
         return ResponseEntity.ok(roomService.addRoomToHotel(hotelId, roomId));
     }
-
-
 
 
 }
