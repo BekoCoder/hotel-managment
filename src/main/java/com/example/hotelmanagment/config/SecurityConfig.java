@@ -47,10 +47,11 @@ public class SecurityConfig {
                         authorizeRequests ->authorizeRequests
                                 .requestMatchers(pathAnonymous).permitAll()
                                 .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/admin/**").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/user/**").permitAll()
                                 .requestMatchers("/hotel/**").permitAll()
                                 .requestMatchers("/room/**").permitAll()
+                                .requestMatchers("/payment/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)

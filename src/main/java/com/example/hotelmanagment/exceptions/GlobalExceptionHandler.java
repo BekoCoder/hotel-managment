@@ -27,4 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleRoomNotFoundException(RoomNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(PaymentException.class)
+    public ResponseEntity<Object> handlePaymentException(PaymentException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

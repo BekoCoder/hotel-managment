@@ -20,7 +20,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@Builder
 public class User extends AbstractEntity implements Serializable, UserDetails {
 
     private String firstName;

@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "payment")
 public class Payment extends AbstractEntity {
 
+    private Double amount;
+
     private LocalDateTime paymentDate;
 
     @Enumerated(EnumType.STRING)
