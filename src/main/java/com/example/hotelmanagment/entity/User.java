@@ -30,7 +30,6 @@ public class User extends AbstractEntity implements Serializable, UserDetails {
 
     @Size(min = 5, max = 16, message = "Password 5 va 16 uzunlik orasida bo'lishi kerak")
     private String password;
-    private Integer isDeleted = 0;
 
     @Enumerated(value = EnumType.STRING)
     private List<UserRoles> roles;
@@ -71,5 +70,10 @@ public class User extends AbstractEntity implements Serializable, UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

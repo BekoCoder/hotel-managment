@@ -33,5 +33,9 @@ public class Order extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    private String description;
+
+    private Double appreciation; // baholash
+
 
 }

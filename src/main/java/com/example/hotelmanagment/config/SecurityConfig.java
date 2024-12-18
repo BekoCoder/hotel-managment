@@ -49,7 +49,7 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/user/**").permitAll()
-                                .requestMatchers("/hotel/**").permitAll()
+                                .requestMatchers("/hotel/**").hasRole("ADMIN")
                                 .requestMatchers("/room/**").permitAll()
                                 .requestMatchers("/payment/**").permitAll()
                                 .anyRequest().authenticated()

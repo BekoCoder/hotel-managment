@@ -28,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDto save(RoomDto roomDto) {
         Room room = roomMapper.map(roomDto, Room.class);
-        if (isExistRoom(roomDto.getRoomNumber())) {
+        if (isExistRoom(room.getRoomNumber())) {
             throw new RoomNotFoundException("Bunday raqamli xona mavjud!!! ");
         }
         if (Objects.equals(roomDto.getType(), RoomType.LUX)) {
