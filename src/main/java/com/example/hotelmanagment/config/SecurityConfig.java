@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 .requestMatchers("/hotel/**").hasRole("ADMIN")
                                 .requestMatchers("/room/**").permitAll()
                                 .requestMatchers("/payment/**").permitAll()
+                                .requestMatchers("/order/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
@@ -64,10 +65,10 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
-        config.setAllowedMethods(Arrays.asList("POST", "OPTIONS", "GET", "DELETE", "PUT"));
-        config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization", "Access-Control-Allow-Origin"));
-        source.registerCorsConfiguration("/**", config);
+        config.addAllowedOriginPattern("*"); // barcha domenlarga ruxsat berish
+        config.setAllowedMethods(Arrays.asList("POST", "OPTIONS", "GET", "DELETE", "PUT")); // GET, DELETE, PUT, POST, OPTIONS  methodlarga ruxsat berish
+        config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization", "Access-Control-Allow-Origin")); // barcha headerlarga ruxsat berish
+        source.registerCorsConfiguration("/**", config); // barcha URL larda ruxsat berish
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
