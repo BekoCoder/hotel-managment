@@ -25,7 +25,7 @@ public abstract class AbstractEntity implements Serializable {
     @UpdateTimestamp
     protected LocalDateTime updatedDate;
 
-    protected Integer isDeleted=0;
+    protected Integer isDeleted = 0;
 
 
 }

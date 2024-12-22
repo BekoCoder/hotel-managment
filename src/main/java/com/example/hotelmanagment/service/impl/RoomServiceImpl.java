@@ -67,7 +67,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void delete(Long id) {
-        roomRepository.deleteById(id);
+        Room room = roomRepository.findById(id).orElseThrow(() -> new CustomException("Bunday xona topilmadi!!!"));
+        if(Objects.isNull(room)){
+            throw new RoomNotFoundException("Bunday xona topilmadi!!! ");
+        }
+        room.setIsDeleted(1);
+        roomRepository.save(room);
     }
 
     @Override
@@ -75,15 +80,19 @@ public class RoomServiceImpl implements RoomService {
         Optional<Hotel> hotel = hotelRepository.findById(hotelId);
         Optional<Room> room = roomRepository.findById(roomId);
         if (hotel.isPresent() && room.isPresent()) {
-            room.get().setHotel(hotel.get());
-            return roomMapper.map(roomRepository.save(room.get()), RoomDto.class);
+            Hotel hotel1 = hotel.get();
+            Room room1 = room.get();
+            if(room1.getIsDeleted()==0 && hotel1.getIsDeleted()==0){
+                room.get().setHotel(hotel.get());
+                return roomMapper.map(roomRepository.save(room.get()), RoomDto.class);
+            }
         }
         throw new CustomException("Bunday xona topilmadi!!! ");
     }
 
     @Override
     public Page<RoomDto> getAllRooms(Pageable pageable) {
-        return roomRepository.findAll(pageable).map((element) -> roomMapper.map(element, RoomDto.class));
+        return roomRepository.findAllByIsDeleted(pageable, 0).map((element) -> roomMapper.map(element, RoomDto.class));
     }
 
     private boolean isExistRoom(Integer number) {

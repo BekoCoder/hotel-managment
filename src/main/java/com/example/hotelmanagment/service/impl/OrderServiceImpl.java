@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto getById(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
-        if (Objects.isNull(order)) {
+        if (Objects.isNull(order) || order.getIsDeleted() == 1) {
             throw new OrderNotFoundException("Buyurtma topilmadi !!!");
         }
         return mapper.map(order, OrderDto.class);
@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto update(Long id, OrderDto orderDto) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
-        if(Objects.isNull(order)){
+        if (Objects.isNull(order) || order.getIsDeleted() == 1) {
             throw new OrderNotFoundException("Buyurtma topilmadi !!!");
         }
         order.setCheckInDate(orderDto.getCheckInDate());
@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDto> getAll(Pageable pageable) {
-        return orderRepository.findAll(pageable).map(order -> mapper.map(order, OrderDto.class));
+        return orderRepository.findAllByIsDeleted(0, pageable).map(order -> mapper.map(order, OrderDto.class));
     }
 
 }

@@ -2,7 +2,10 @@ package com.example.hotelmanagment.entity;
 
 import com.example.hotelmanagment.enumeration.RoomType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,6 @@ public class Room extends AbstractEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Order> order = new ArrayList<>();
-
 
 
 }

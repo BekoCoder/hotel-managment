@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService {
@@ -30,13 +32,13 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Page<HotelDto> getAll(Pageable pageable) {
-        return hotelRepository.findAll(pageable).map(hotel -> mapper.map(hotel, HotelDto.class));
+        return hotelRepository.findAllByIsDeleted(0, pageable).map(hotel -> mapper.map(hotel, HotelDto.class));
     }
 
     @Override
     public HotelDto getById(Long id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
-        if (hotel == null) {
+        if (hotel == null || hotel.getIsDeleted() == 1) {
             throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
         }
         return mapper.map(hotel, HotelDto.class);
@@ -45,13 +47,17 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public void deleteById(Long id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
-        hotelRepository.delete(hotel);
+        if (Objects.isNull(hotel)) {
+            throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
+        }
+        hotel.setIsDeleted(1);
+        hotelRepository.save(hotel);
     }
 
     @Override
     public HotelDto updateById(Long id, HotelDto hotelDto) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
-        if (hotel == null) {
+        if (hotel == null || hotel.getIsDeleted() == 1) {
             throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
         }
         if (isExistHotel(hotelDto.getName())) {

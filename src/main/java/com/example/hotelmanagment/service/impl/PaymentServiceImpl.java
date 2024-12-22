@@ -27,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentDto updatePayment(PaymentDto paymentDto, Long id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("To'lov topilmadi"));
-        if(Objects.isNull(payment)){
+        if (Objects.isNull(payment) || payment.getIsDeleted() == 1) {
             throw new RuntimeException("To'lov topilmadi");
         }
         payment.setAmount(paymentDto.getAmount());
@@ -37,18 +37,26 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void deleteById(Long id) {
-        paymentRepository.deleteById(id);
+        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("To'lov topilmadi"));
+        if (Objects.isNull(payment) || payment.getIsDeleted() == 1) {
+            throw new RuntimeException("To'lov topilmadi");
+        }
+        payment.setIsDeleted(1);
+        paymentRepository.save(payment);
     }
 
     @Override
     public PaymentDto getPaymentById(Long id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("To'lov topilmadi"));
+        if (Objects.isNull(payment) || payment.getIsDeleted() == 1) {
+            throw new RuntimeException("To'lov topilmadi");
+        }
         return mapper.map(payment, PaymentDto.class);
     }
 
     @Override
     public Page<PaymentDto> getAllPayments(Pageable pageable) {
-        return  paymentRepository.findAll(pageable).map(payment -> mapper.map(payment, PaymentDto.class));
+        return paymentRepository.findAllByIsDeleted(0, pageable).map(payment -> mapper.map(payment, PaymentDto.class));
     }
 
 

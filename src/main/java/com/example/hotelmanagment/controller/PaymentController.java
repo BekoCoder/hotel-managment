@@ -41,7 +41,7 @@ public class PaymentController {
     @GetMapping("/get-all")
     public ResponseEntity<List<PaymentDto>> getAllPayments(Pageable pageable) {
         Page<PaymentDto> page = paymentService.getAllPayments(pageable);
-            return ResponseEntity.ok(page.getContent());
+        return ResponseEntity.ok(page.getContent());
     }
 
     @Operation(summary = "Id orqali olish")

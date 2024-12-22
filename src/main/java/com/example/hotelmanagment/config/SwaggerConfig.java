@@ -17,7 +17,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "Bearer Token";
-        final String apiTitle = String.format(StringUtils.capitalize("Hotel Management API"));
+        final String apiTitle = String.format(StringUtils.capitalize("Hotel Management"));
         final String[] developer = {"Mirzayev Bekzod"};
         final String apiDescription = String.format(
                 """
