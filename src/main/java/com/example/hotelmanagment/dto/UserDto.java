@@ -9,6 +9,8 @@ import java.util.List;
 @Data
 @Schema(description = "User bo'yicha ma'lumotlar")
 public class UserDto {
+    @Schema(description = "Id")
+    private Long id;
 
     @Schema(description = "Firstname")
     private String firstName;

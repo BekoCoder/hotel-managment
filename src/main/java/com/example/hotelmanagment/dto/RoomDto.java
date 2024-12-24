@@ -9,12 +9,20 @@ import lombok.Data;
 @Data
 @Schema(description = "Xona bo'yicha ma'lumotlar")
 public class RoomDto {
+
+    @Schema(description = "xona Idsi")
+    private Long id;
+
     @Schema(description = "xona raqami")
     private Integer roomNumber;
-    @Schema(description = "narxi")
-    private Double price;
     @Schema(description = "ta'rifi")
     private String description;
+
+    @Schema(description = "xona narxi")
+    private Integer price;
+
+    @Schema(description = "xona holati")
+    private Boolean isActive;
 
     @Schema(description = "xona turi")
     @Enumerated(EnumType.STRING)

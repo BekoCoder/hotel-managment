@@ -60,7 +60,6 @@ public class RoomServiceImpl implements RoomService {
             throw new RoomNotFoundException("Bunday xona topilmadi!!! ");
         }
         room.setRoomNumber(roomDto.getRoomNumber());
-        room.setPrice(roomDto.getPrice());
         return roomMapper.map(roomRepository.save(room), RoomDto.class);
 
     }

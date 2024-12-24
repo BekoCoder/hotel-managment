@@ -19,7 +19,7 @@ import java.util.List;
 public class Room extends AbstractEntity {
     private Integer roomNumber;
     private Boolean isActive = true;
-    private Double price;
+    private Integer price;
     private String description;
 
     @Enumerated(EnumType.STRING)

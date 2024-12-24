@@ -1,23 +1,27 @@
 package com.example.hotelmanagment.dto;
 
+import com.example.hotelmanagment.enumeration.OrderStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Schema(description = "buyurtmalar bo'yicha ma'lumotlar")
 public class OrderDto {
 
-    @Schema(description = "buyurtma berilgan sana")
-    private LocalDateTime orderDate;
-    @Schema(description = "xonaga kirgan sana")
-    private LocalDateTime checkInDate;
-    @Schema(description = "xonadan chiqqan sana")
-    private LocalDateTime checkOutDate;
-    @Schema(description = "xizmat sifati haqida")
-    private String description;
-    @Schema(description = "xonaga qo'yilgan baho")
-    private Double appreciation;
+    @Schema(description = "buyurtma raqami")
+    private Long id;
+    private UserDto user;
+    private RoomDto room;
+    @Schema(description = "buyurtma sanasi")
+    private LocalDate startDate;
+    @Schema(description = "buyurtma tugash sanasi")
+    private LocalDate endDate;
+    @Schema(description = "buyurtma narxi")
+    private Integer price;
+    @Schema(description = "buyurtma holati")
+    private OrderStatus status;
+
 
 }
