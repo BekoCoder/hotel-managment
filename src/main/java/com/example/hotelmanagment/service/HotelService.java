@@ -1,15 +1,16 @@
 package com.example.hotelmanagment.service;
 
 import com.example.hotelmanagment.dto.HotelDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface HotelService {
-    HotelDto save(HotelDto hotelDto);
+    ResponseDto<HotelDto> save(HotelDto hotelDto);
 
     Page<HotelDto> getAll(Pageable pageable);
 
-    HotelDto getById(Long id);
+    ResponseDto<HotelDto> getById(Long id);
 
     void deleteById(Long id);
 

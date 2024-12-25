@@ -34,7 +34,7 @@ public class Order extends AbstractEntity {
 
     private String description;
 
-    private Double appreciation; // baholash
+    private Double rating; // baholash
 
 
 }

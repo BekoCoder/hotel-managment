@@ -1,6 +1,7 @@
 package com.example.hotelmanagment.controller;
 
 import com.example.hotelmanagment.dto.HotelDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.service.HotelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,7 @@ public class HotelController {
 
     @Operation(summary = "Mehmonxona yaratish")
     @PostMapping("/create")
-    public ResponseEntity<HotelDto> create(@RequestBody HotelDto hotelDto) {
+    public ResponseEntity<ResponseDto<HotelDto>> create(@RequestBody HotelDto hotelDto) {
         log.trace("Accessing Create /hotel/create/" + hotelDto);
         return ResponseEntity.ok(hotelService.save(hotelDto));
     }
@@ -38,7 +39,7 @@ public class HotelController {
 
     @Operation(summary = "Id orqali olish")
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<HotelDto> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseDto<HotelDto>> getById(@PathVariable("id") Long id) {
         log.trace("Accessing Get by-id /hotel/get-by-id/{}", id);
         return ResponseEntity.ok(hotelService.getById(id));
     }

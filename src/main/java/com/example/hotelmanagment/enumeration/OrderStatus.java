@@ -4,4 +4,5 @@ public enum OrderStatus {
     PENDING, //kutilmoqda
     CONFIRMED, //confirmed
     CANCELLED, //bekor qilindi
+    COMPLETED //tugallandi
 }

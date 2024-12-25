@@ -1,13 +1,14 @@
 package com.example.hotelmanagment.service;
 
 import com.example.hotelmanagment.dto.OrderDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
-    OrderDto save(OrderDto orderDto);
+    ResponseDto<OrderDto> save(OrderDto orderDto);
 
-    OrderDto getById(Long id);
+    ResponseDto<OrderDto> getById(Long id);
 
     OrderDto update(Long id, OrderDto orderDto);
 
@@ -15,5 +16,6 @@ public interface OrderService {
 
     Page<OrderDto> getAll(Pageable pageable);
 
+    ResponseDto<OrderDto> checkOut(Long orderId, String description, Double rating);
 
 }

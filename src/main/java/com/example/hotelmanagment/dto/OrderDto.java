@@ -19,7 +19,7 @@ public class OrderDto {
     @Schema(description = "buyurtma tugash sanasi")
     private LocalDate endDate;
     @Schema(description = "buyurtma narxi")
-    private Integer price;
+    private Integer totalCost;
     @Schema(description = "buyurtma holati")
     private OrderStatus status;
 

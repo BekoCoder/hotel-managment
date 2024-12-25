@@ -1,6 +1,7 @@
 package com.example.hotelmanagment.controller;
 
 import com.example.hotelmanagment.dto.OrderDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +22,7 @@ public class OrderController {
 
     @Operation(summary = "Buyurtma yaratish")
     @PostMapping("/create")
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<ResponseDto<OrderDto>> createOrder(@RequestBody OrderDto orderDto) {
         log.trace("Accessing Order /order/create" + orderDto);
         return ResponseEntity.ok(orderService.save(orderDto));
 
@@ -36,7 +37,7 @@ public class OrderController {
 
     @Operation(summary = "Id orqali buyurtmani olish")
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<OrderDto>> getOrderById(@PathVariable Long id) {
         log.trace("Accessing Order /order/get/{}", id);
         return ResponseEntity.ok(orderService.getById(id));
     }
@@ -48,6 +49,15 @@ public class OrderController {
         Page<OrderDto> page = orderService.getAll(pageable);
         log.trace("GetAll /order/getAll {}", page.getSize());
         return ResponseEntity.ok(page.getContent());
+    }
+
+    @Operation(summary = "Buyurtmani tugatish")
+    @PostMapping("checkout/{id}")
+    public ResponseEntity<ResponseDto<OrderDto>> checkOut(@PathVariable Long id,
+                                                          @RequestParam(value = "description") String description,
+                                                          @RequestParam(value = "rating") Double rating){
+        log.trace("Accessing Checkout /order/checkout/{}", id);
+        return ResponseEntity.ok(orderService.checkOut(id, description, rating));
     }
 
 

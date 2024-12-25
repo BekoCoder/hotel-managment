@@ -1,6 +1,7 @@
 package com.example.hotelmanagment.service.impl;
 
 import com.example.hotelmanagment.dto.HotelDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.entity.Hotel;
 import com.example.hotelmanagment.exceptions.CustomException;
 import com.example.hotelmanagment.exceptions.HotelNotFoundException;
@@ -21,12 +22,17 @@ public class HotelServiceImpl implements HotelService {
     private final ModelMapper mapper;
 
     @Override
-    public HotelDto save(HotelDto hotelDto) {
+    public ResponseDto<HotelDto> save(HotelDto hotelDto) {
+        ResponseDto<HotelDto> responseDto = new ResponseDto<>();
         Hotel hotel = mapper.map(hotelDto, Hotel.class);
         if (isExistHotel(hotel.getName())) {
-            throw new CustomException("Bunday mehmonxona mavjud");
+            throw new HotelNotFoundException("Bunday mehmonxona mavjud");
         }
-        return mapper.map(hotelRepository.save(hotel), HotelDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Mehmonxona saqlandi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(hotelRepository.save(hotel), HotelDto.class));
+        return responseDto;
 
     }
 
@@ -36,12 +42,18 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelDto getById(Long id) {
+    public ResponseDto<HotelDto> getById(Long id) {
+        ResponseDto<HotelDto> responseDto = new ResponseDto<>();
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
         if (hotel == null || hotel.getIsDeleted() == 1) {
             throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
         }
-        return mapper.map(hotel, HotelDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Mehmonxona topildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(hotel, HotelDto.class));
+        return responseDto;
+
     }
 
     @Override
