@@ -15,6 +15,7 @@ public class RoomDto {
 
     @Schema(description = "xona raqami")
     private Integer roomNumber;
+
     @Schema(description = "ta'rifi")
     private String description;
 

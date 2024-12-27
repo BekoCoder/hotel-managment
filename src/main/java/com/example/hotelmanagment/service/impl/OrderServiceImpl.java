@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderNotFoundException("Bunday xona topilmadi !!!");
         }
         if (room.getIsActive().equals(false)) {
-            throw new OrderNotFoundException("Bunday xona band qilingan !!!");
+            throw new OrderNotFoundException("Bu xona band qilingan !!!");
         } else {
             order.setStartDate(orderDto.getStartDate());
             order.setEndDate(orderDto.getEndDate());
@@ -85,12 +85,15 @@ public class OrderServiceImpl implements OrderService {
         responseDto.setMessage("Buyurtma o'zgartirildi");
         responseDto.setRecordsTotal(1L);
         responseDto.setData(mapper.map(orderRepository.save(mapper.map(orderDto, Order.class)), OrderDto.class));
-       return responseDto;
+        return responseDto;
     }
 
     @Override
     public void delete(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
+        if(Objects.isNull(order) || order.getIsDeleted() == 1){
+            throw new OrderNotFoundException("Buyurtma topilmadi !!!");
+        }
         order.setIsDeleted(1);
         orderRepository.save(order);
     }

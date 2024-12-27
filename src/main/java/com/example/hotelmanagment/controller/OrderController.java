@@ -60,5 +60,13 @@ public class OrderController {
         return ResponseEntity.ok(orderService.checkOut(id, description, rating));
     }
 
+    @Operation(summary = "Buyurtmani o'chirish")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+        log.trace("Accessing Order /order/delete/{}", id);
+        orderService.delete(id);
+        return ResponseEntity.ok("Order deleted");
+    }
+
 
 }
