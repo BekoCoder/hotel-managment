@@ -1,6 +1,7 @@
 package com.example.hotelmanagment.controller;
 
 import com.example.hotelmanagment.dto.PaymentDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,19 +22,19 @@ public class PaymentController {
 
     @Operation(summary = "Qo'shish")
     @PostMapping("/create")
-    public ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto paymentDto) {
+    public ResponseEntity<ResponseDto<PaymentDto>> createPayment(@RequestBody PaymentDto paymentDto) {
         return ResponseEntity.ok(paymentService.createPayment(paymentDto));
     }
 
     @Operation(summary = "Yangilash")
     @PutMapping("/update/{id}")
-    public ResponseEntity<PaymentDto> updatePayment(@RequestBody PaymentDto paymentDto, @PathVariable Long id) {
+    public ResponseEntity<ResponseDto<PaymentDto>> updatePayment(@RequestBody PaymentDto paymentDto, @PathVariable Long id) {
         return ResponseEntity.ok(paymentService.updatePayment(paymentDto, id));
     }
 
     @Operation(summary = "Id orqali olish")
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<PaymentDto> getPaymentById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<PaymentDto>> getPaymentById(@PathVariable Long id) {
         return ResponseEntity.ok(paymentService.getPaymentById(id));
     }
 

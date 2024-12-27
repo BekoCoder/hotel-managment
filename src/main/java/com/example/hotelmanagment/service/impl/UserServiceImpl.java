@@ -2,6 +2,7 @@ package com.example.hotelmanagment.service.impl;
 
 import com.example.hotelmanagment.dto.JwtRequestDto;
 import com.example.hotelmanagment.dto.JwtResponseDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.dto.UserDto;
 import com.example.hotelmanagment.entity.User;
 import com.example.hotelmanagment.enumeration.UserRoles;
@@ -28,7 +29,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto save(UserDto userDto) {
+    public ResponseDto<UserDto> save(UserDto userDto) {
+        ResponseDto<UserDto> responseDto = new ResponseDto<>();
         User user = mapper.map(userDto, User.class);
         user.setIsDeleted(0);
         user.setRoles(List.of(UserRoles.USER));
@@ -39,11 +41,16 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("Parol uzunligi 5 va 16 uzunlik orasida bo'lishi kerak");
         }
         userRepository.save(user);
-        return mapper.map(user, UserDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Foydalanuvchi saqlandi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(user, UserDto.class));
+        return responseDto;
     }
 
     @Override
-    public JwtResponseDto login(JwtRequestDto requestDto) {
+    public ResponseDto<JwtResponseDto> login(JwtRequestDto requestDto) {
+        ResponseDto<JwtResponseDto> responseDto = new ResponseDto<>();
         User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new CustomException("Parol yoki email noto'g'ri kiritildi!!!");
@@ -52,15 +59,20 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("Foydalanuvchi topilmadi!!!");
         }
         String token = jwtService.generateToken(user);
-        return JwtResponseDto.builder()
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Token saqlandi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(JwtResponseDto.builder()
                 .token(token)
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .build();
+                .build());
+        return responseDto;
     }
 
     @Override
-    public UserDto update(UserDto userDto, Long userId) {
+    public ResponseDto<UserDto> update(UserDto userDto, Long userId) {
+        ResponseDto<UserDto> responseDto = new ResponseDto<>();
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
         if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi topilmadi!!!");
@@ -68,7 +80,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(user);
-        return mapper.map(user, UserDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Foydalanuvchi o'zgartirildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(user, UserDto.class));
+        return responseDto;
     }
 
     @Override
@@ -92,10 +108,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(Long id) {
+    public ResponseDto<UserDto> getUserById(Long id) {
+        ResponseDto<UserDto> responseDto = new ResponseDto<>();
         Optional<User> byId = userRepository.findById(id);
         if (byId.isPresent()) {
-            return mapper.map(byId.get(), UserDto.class);
+            responseDto.setSuccess(true);
+            responseDto.setMessage("Foydalanuvchi topildi");
+            responseDto.setRecordsTotal(1L);
+            responseDto.setData(mapper.map(byId.get(), UserDto.class));
+            return responseDto;
         }
         throw new CustomException("Foydalanuvchi topilmadi!!!");
     }

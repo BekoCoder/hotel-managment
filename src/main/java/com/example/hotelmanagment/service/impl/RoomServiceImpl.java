@@ -1,5 +1,6 @@
 package com.example.hotelmanagment.service.impl;
 
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.dto.RoomDto;
 import com.example.hotelmanagment.entity.Hotel;
 import com.example.hotelmanagment.entity.Room;
@@ -26,7 +27,8 @@ public class RoomServiceImpl implements RoomService {
     private final ModelMapper roomMapper;
 
     @Override
-    public RoomDto save(RoomDto roomDto) {
+    public ResponseDto<RoomDto> save(RoomDto roomDto) {
+        ResponseDto<RoomDto> responseDto = new ResponseDto<>();
         Room room = roomMapper.map(roomDto, Room.class);
         if (isExistRoom(room.getRoomNumber())) {
             throw new RoomNotFoundException("Bunday raqamli xona mavjud!!! ");
@@ -40,34 +42,46 @@ public class RoomServiceImpl implements RoomService {
         } else {
             throw new CustomException("Bunday turdagi xonalar mavjud emas!!! ");
         }
-
-        return roomMapper.map(roomRepository.save(room), RoomDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Xona saqlandi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(roomMapper.map(roomRepository.save(room), RoomDto.class));
+        return responseDto;
     }
 
     @Override
-    public RoomDto getById(Long id) {
+    public ResponseDto<RoomDto> getById(Long id) {
         Room room = roomRepository.findById(id).orElseThrow(() -> new CustomException("Bunday xona topilmadi!!!"));
         if (Objects.isNull(room)) {
             throw new RoomNotFoundException("Bunday xona topilmadi!!! ");
         }
-        return roomMapper.map(room, RoomDto.class);
+        ResponseDto<RoomDto> responseDto = new ResponseDto<>();
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Xona topildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(roomMapper.map(room, RoomDto.class));
+        return responseDto;
     }
 
     @Override
-    public RoomDto update(RoomDto roomDto, Long id) {
+    public ResponseDto<RoomDto> update(RoomDto roomDto, Long id) {
+        ResponseDto<RoomDto> responseDto = new ResponseDto<>();
         Room room = roomRepository.findById(id).orElseThrow(() -> new CustomException("Bunday xona topilmadi!!!"));
         if (Objects.isNull(room)) {
             throw new RoomNotFoundException("Bunday xona topilmadi!!! ");
         }
         room.setRoomNumber(roomDto.getRoomNumber());
-        return roomMapper.map(roomRepository.save(room), RoomDto.class);
-
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Xona o'zgartirildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(roomMapper.map(roomRepository.save(room), RoomDto.class));
+        return responseDto;
     }
 
     @Override
     public void delete(Long id) {
         Room room = roomRepository.findById(id).orElseThrow(() -> new CustomException("Bunday xona topilmadi!!!"));
-        if(Objects.isNull(room)){
+        if (Objects.isNull(room)) {
             throw new RoomNotFoundException("Bunday xona topilmadi!!! ");
         }
         room.setIsDeleted(1);
@@ -75,15 +89,20 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDto addRoomToHotel(Long hotelId, Long roomId) {
+    public ResponseDto<RoomDto> addRoomToHotel(Long hotelId, Long roomId) {
+        ResponseDto<RoomDto> responseDto = new ResponseDto<>();
         Optional<Hotel> hotel = hotelRepository.findById(hotelId);
         Optional<Room> room = roomRepository.findById(roomId);
         if (hotel.isPresent() && room.isPresent()) {
             Hotel hotel1 = hotel.get();
             Room room1 = room.get();
-            if(room1.getIsDeleted()==0 && hotel1.getIsDeleted()==0){
+            if (room1.getIsDeleted() == 0 && hotel1.getIsDeleted() == 0) {
                 room.get().setHotel(hotel.get());
-                return roomMapper.map(roomRepository.save(room.get()), RoomDto.class);
+                responseDto.setSuccess(true);
+                responseDto.setMessage("Xona mehmonxonaga qo'shildi");
+                responseDto.setRecordsTotal(1L);
+                responseDto.setData(roomMapper.map(roomRepository.save(room.get()), RoomDto.class));
+                return responseDto;
             }
         }
         throw new CustomException("Bunday xona topilmadi!!! ");

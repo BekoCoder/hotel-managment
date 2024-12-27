@@ -67,7 +67,8 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelDto updateById(Long id, HotelDto hotelDto) {
+    public ResponseDto<HotelDto> updateById(Long id, HotelDto hotelDto) {
+        ResponseDto<HotelDto> responseDto = new ResponseDto<>();
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
         if (hotel == null || hotel.getIsDeleted() == 1) {
             throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
@@ -78,7 +79,11 @@ public class HotelServiceImpl implements HotelService {
         hotel.setName(hotelDto.getName());
         hotel.setPhone(hotelDto.getPhone());
         hotel.setEmail(hotelDto.getEmail());
-        return mapper.map(hotelRepository.save(hotel), HotelDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Mehmonxona o'zgartirildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(hotelRepository.save(hotel), HotelDto.class));
+        return  responseDto;
     }
 
     private boolean isExistHotel(String name) {

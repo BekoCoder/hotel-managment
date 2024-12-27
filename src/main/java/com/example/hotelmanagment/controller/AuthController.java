@@ -2,6 +2,7 @@ package com.example.hotelmanagment.controller;
 
 import com.example.hotelmanagment.dto.JwtRequestDto;
 import com.example.hotelmanagment.dto.JwtResponseDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.dto.UserDto;
 import com.example.hotelmanagment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +32,7 @@ public class AuthController {
 
     @Operation(summary = "Login")
     @PostMapping("/login")
-    public ResponseEntity<JwtResponseDto> login(@RequestBody JwtRequestDto jwtRequestDto) {
+    public ResponseEntity<ResponseDto<JwtResponseDto>> login(@RequestBody JwtRequestDto jwtRequestDto) {
         return ResponseEntity.ok(userService.login(jwtRequestDto));
 
     }

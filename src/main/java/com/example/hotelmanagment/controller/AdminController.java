@@ -1,5 +1,6 @@
 package com.example.hotelmanagment.controller;
 
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.dto.UserDto;
 import com.example.hotelmanagment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +23,7 @@ public class AdminController {
 
     @Operation(summary = "Userlarni id orqali yangilash")
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<ResponseDto<UserDto>> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userDto) {
         log.trace("Accessing UPDATE /admin/update/{}", id);
         return ResponseEntity.ok(userService.update(userDto, id));
     }
@@ -38,9 +39,9 @@ public class AdminController {
 
     @Operation(summary = "Id orqali userni olish")
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<UserDto>> getById(@PathVariable Long id) {
         log.trace("Accessing GET /admin/get-by-id/{}", id);
-        UserDto userById = userService.getUserById(id);
+        ResponseDto<UserDto> userById = userService.getUserById(id);
         log.trace("Returned to fron-end: {} ", userById);
         return ResponseEntity.ok(userById);
     }

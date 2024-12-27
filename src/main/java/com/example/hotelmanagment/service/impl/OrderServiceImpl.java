@@ -75,13 +75,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto update(Long id, OrderDto orderDto) {
+    public ResponseDto<OrderDto> update(Long id, OrderDto orderDto) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
+        ResponseDto<OrderDto> responseDto = new ResponseDto<>();
         if (Objects.isNull(order) || order.getIsDeleted() == 1) {
             throw new OrderNotFoundException("Buyurtma topilmadi !!!");
         }
-
-        return mapper.map(orderRepository.save(order), OrderDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Buyurtma o'zgartirildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(orderRepository.save(mapper.map(orderDto, Order.class)), OrderDto.class));
+       return responseDto;
     }
 
     @Override

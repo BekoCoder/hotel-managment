@@ -14,6 +14,6 @@ public interface HotelService {
 
     void deleteById(Long id);
 
-    HotelDto updateById(Long id, HotelDto hotelDto);
+    ResponseDto<HotelDto> updateById(Long id, HotelDto hotelDto);
 
 }

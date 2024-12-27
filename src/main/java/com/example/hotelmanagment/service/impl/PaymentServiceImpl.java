@@ -1,6 +1,7 @@
 package com.example.hotelmanagment.service.impl;
 
 import com.example.hotelmanagment.dto.PaymentDto;
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.entity.Payment;
 import com.example.hotelmanagment.repository.PaymentRepository;
 import com.example.hotelmanagment.service.PaymentService;
@@ -19,20 +20,30 @@ public class PaymentServiceImpl implements PaymentService {
     private final ModelMapper mapper;
 
     @Override
-    public PaymentDto createPayment(PaymentDto paymentDto) {
+    public ResponseDto<PaymentDto> createPayment(PaymentDto paymentDto) {
         Payment payment = mapper.map(paymentDto, Payment.class);
-        return mapper.map(paymentRepository.save(payment), PaymentDto.class);
+        ResponseDto<PaymentDto> responseDto = new ResponseDto<>();
+        responseDto.setSuccess(true);
+        responseDto.setMessage("To'lov saqlandi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(paymentRepository.save(payment), PaymentDto.class));
+        return responseDto;
     }
 
     @Override
-    public PaymentDto updatePayment(PaymentDto paymentDto, Long id) {
+    public ResponseDto<PaymentDto> updatePayment(PaymentDto paymentDto, Long id) {
+        ResponseDto<PaymentDto> responseDto = new ResponseDto<>();
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("To'lov topilmadi"));
         if (Objects.isNull(payment) || payment.getIsDeleted() == 1) {
             throw new RuntimeException("To'lov topilmadi");
         }
         payment.setAmount(paymentDto.getAmount());
         payment.setPaymentDate(paymentDto.getPaymentDate());
-        return mapper.map(paymentRepository.save(payment), PaymentDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("To'lov o'zgartirildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(paymentRepository.save(payment), PaymentDto.class));
+        return responseDto;
     }
 
     @Override
@@ -46,12 +57,17 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto getPaymentById(Long id) {
+    public ResponseDto<PaymentDto> getPaymentById(Long id) {
+        ResponseDto<PaymentDto> responseDto = new ResponseDto<>();
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("To'lov topilmadi"));
         if (Objects.isNull(payment) || payment.getIsDeleted() == 1) {
             throw new RuntimeException("To'lov topilmadi");
         }
-        return mapper.map(payment, PaymentDto.class);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("To'lov topildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData(mapper.map(payment, PaymentDto.class));
+        return  responseDto;
     }
 
     @Override

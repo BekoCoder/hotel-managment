@@ -1,5 +1,6 @@
 package com.example.hotelmanagment.controller;
 
+import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.dto.RoomDto;
 import com.example.hotelmanagment.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,21 +24,21 @@ public class RoomController {
 
     @Operation(summary = "Xona yaratish")
     @PostMapping("/create")
-    public ResponseEntity<RoomDto> createRoom(@RequestBody RoomDto roomDto) {
+    public ResponseEntity<ResponseDto<RoomDto>> createRoom(@RequestBody RoomDto roomDto) {
         log.trace("Accessing Room /room/create" + roomDto);
         return ResponseEntity.ok(roomService.save(roomDto));
     }
 
     @Operation(summary = "Xonalarni yangilash")
     @PutMapping("/update/{id}")
-    public ResponseEntity<RoomDto> updateRoom(@RequestBody RoomDto roomDto, @PathVariable Long id) {
+    public ResponseEntity<ResponseDto<RoomDto>> updateRoom(@RequestBody RoomDto roomDto, @PathVariable Long id) {
         log.trace("Accessing Room /room/update/{}", id);
         return ResponseEntity.ok(roomService.update(roomDto, id));
     }
 
     @Operation(summary = "Id orqali xonani olish")
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<RoomDto> getRoomById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<RoomDto>> getRoomById(@PathVariable Long id) {
         log.trace("Accessing Room /room/get/{}", id);
         return ResponseEntity.ok(roomService.getById(id));
     }
@@ -61,7 +62,7 @@ public class RoomController {
 
     @Operation(summary = "xonalarni mehmonxonaga biriktirish")
     @PutMapping("/add-room-to-hotel/{hotelId}/{roomId}")
-    public ResponseEntity<RoomDto> addRoomToHotel(@PathVariable Long hotelId, @PathVariable Long roomId) {
+    public ResponseEntity<ResponseDto<RoomDto>> addRoomToHotel(@PathVariable Long hotelId, @PathVariable Long roomId) {
         return ResponseEntity.ok(roomService.addRoomToHotel(hotelId, roomId));
     }
 

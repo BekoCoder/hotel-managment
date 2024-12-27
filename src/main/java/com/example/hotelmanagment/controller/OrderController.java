@@ -30,7 +30,7 @@ public class OrderController {
 
     @Operation(summary = "Buyurtmani yangilash")
     @PostMapping("/update/{id}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long id, @RequestBody OrderDto orderDto) {
+    public ResponseEntity<ResponseDto<OrderDto>> updateOrder(@PathVariable Long id, @RequestBody OrderDto orderDto) {
         log.trace("Accessing Order /order/update/{}", id);
         return ResponseEntity.ok(orderService.update(id, orderDto));
     }
