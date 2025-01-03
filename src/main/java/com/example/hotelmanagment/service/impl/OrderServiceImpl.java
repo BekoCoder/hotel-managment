@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -91,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void delete(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
-        if(Objects.isNull(order) || order.getIsDeleted() == 1){
+        if (Objects.isNull(order) || order.getIsDeleted() == 1) {
             throw new OrderNotFoundException("Buyurtma topilmadi !!!");
         }
         order.setIsDeleted(1);
@@ -107,8 +108,8 @@ public class OrderServiceImpl implements OrderService {
     public ResponseDto<OrderDto> checkOut(Long orderId, String description, Double rating) {
         ResponseDto<OrderDto> responseDto = new ResponseDto<>();
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
-        if (!order.getStatus().equals(OrderStatus.CONFIRMED)) {
-            throw new OrderNotFoundException("Buyurtma tugallanmagan !!!");
+        if (order.getStatus().equals(OrderStatus.COMPLETED)) {
+            throw new OrderNotFoundException("Buyurtma tugallangan !!!");
         }
 
         Room room = order.getRoom();
@@ -122,6 +123,34 @@ public class OrderServiceImpl implements OrderService {
         responseDto.setMessage("Buyurtma tugallandi");
         responseDto.setRecordsTotal(1L);
         responseDto.setData(mapper.map(order, OrderDto.class));
+        return responseDto;
+    }
+
+    @Override
+    public ResponseDto<OrderDto> cancel(Long orderId) {
+        ResponseDto<OrderDto> responseDto = new ResponseDto<>();
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
+        if (order.getStatus().equals(OrderStatus.CANCELLED)) {
+            throw new OrderNotFoundException("Buyurtma bekor qilingan !!!");
+        }
+        if(order.getStatus().equals(OrderStatus.CONFIRMED) || order.getStatus().equals(OrderStatus.PENDING)){
+            if(order.getEndDate().isAfter(LocalDate.now())){
+                Room room = order.getRoom();
+                room.setIsActive(true);
+                roomRepository.save(room);
+                order.setStatus(OrderStatus.CANCELLED);
+                orderRepository.save(order);
+                responseDto.setSuccess(true);
+                responseDto.setMessage("Buyurtma bekor qilindi");
+                responseDto.setRecordsTotal(1L);
+                responseDto.setData(mapper.map(order, OrderDto.class));
+                return responseDto;
+
+            }
+        }
+        responseDto.setReason("Buyurtma bekor qilinmadi");
+        responseDto.setSuccess(false);
+        responseDto.setRecordsTotal(0);
         return responseDto;
     }
 }

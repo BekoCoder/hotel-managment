@@ -55,7 +55,7 @@ public class OrderController {
     @PostMapping("checkout/{id}")
     public ResponseEntity<ResponseDto<OrderDto>> checkOut(@PathVariable Long id,
                                                           @RequestParam(value = "description") String description,
-                                                          @RequestParam(value = "rating") Double rating){
+                                                          @RequestParam(value = "rating") Double rating) {
         log.trace("Accessing Checkout /order/checkout/{}", id);
         return ResponseEntity.ok(orderService.checkOut(id, description, rating));
     }
@@ -66,6 +66,13 @@ public class OrderController {
         log.trace("Accessing Order /order/delete/{}", id);
         orderService.delete(id);
         return ResponseEntity.ok("Order deleted");
+    }
+
+    @Operation(summary = "Buyurtmani bekor qilish")
+    @PostMapping("/cancel/{id}")
+    public ResponseEntity<ResponseDto<OrderDto>> cancelOrder(@PathVariable Long id) {
+        log.trace("Accessing Order /order/cancel/{}", id);
+        return ResponseEntity.ok(orderService.cancel(id));
     }
 
 

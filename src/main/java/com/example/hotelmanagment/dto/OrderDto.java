@@ -12,8 +12,8 @@ public class OrderDto {
 
     @Schema(description = "buyurtma raqami")
     private Long id;
-    private UserDto user;
-    private RoomDto room;
+    private UserBasicDto user;
+    private RoomBasicDto room;
     @Schema(description = "buyurtma sanasi")
     private LocalDate startDate;
     @Schema(description = "buyurtma tugash sanasi")

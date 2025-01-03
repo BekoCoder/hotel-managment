@@ -18,4 +18,5 @@ public interface OrderService {
 
     ResponseDto<OrderDto> checkOut(Long orderId, String description, Double rating);
 
+    ResponseDto<OrderDto> cancel(Long orderId);
 }
