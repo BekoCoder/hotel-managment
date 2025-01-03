@@ -131,10 +131,10 @@ public class OrderServiceImpl implements OrderService {
         ResponseDto<OrderDto> responseDto = new ResponseDto<>();
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
         if (order.getStatus().equals(OrderStatus.CANCELLED)) {
-            throw new OrderNotFoundException("Buyurtma bekor qilingan !!!");
+            throw new OrderNotFoundException("Buyurtma allaqachon bekor qilingan !!!");
         }
-        if(order.getStatus().equals(OrderStatus.CONFIRMED) || order.getStatus().equals(OrderStatus.PENDING)){
-            if(order.getEndDate().isAfter(LocalDate.now())){
+        if (order.getStatus().equals(OrderStatus.CONFIRMED) || order.getStatus().equals(OrderStatus.PENDING)) {
+            if (order.getEndDate().isAfter(LocalDate.now())) {
                 Room room = order.getRoom();
                 room.setIsActive(true);
                 roomRepository.save(room);
