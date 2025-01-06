@@ -111,7 +111,9 @@ public class OrderServiceImpl implements OrderService {
         if (order.getStatus().equals(OrderStatus.COMPLETED)) {
             throw new OrderNotFoundException("Buyurtma tugallangan !!!");
         }
-
+        if (order.getStatus().equals(OrderStatus.CANCELLED)) {
+            throw new OrderNotFoundException("Buyurtma bekor qilingan !!!");
+        }
         Room room = order.getRoom();
         room.setIsActive(true);
         roomRepository.save(room);
@@ -132,6 +134,9 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
         if (order.getStatus().equals(OrderStatus.CANCELLED)) {
             throw new OrderNotFoundException("Buyurtma allaqachon bekor qilingan !!!");
+        }
+        if (order.getStatus().equals(OrderStatus.COMPLETED)) {
+            throw new OrderNotFoundException("Buyurtma tugallangan !!!");
         }
         if (order.getStatus().equals(OrderStatus.CONFIRMED) || order.getStatus().equals(OrderStatus.PENDING)) {
             if (order.getEndDate().isAfter(LocalDate.now())) {
