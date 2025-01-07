@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
         int code = random.nextInt(upper - lower) + lower;
         System.out.println(code);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
-        if(user.getIsDeleted()==1){
+        if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi topilmadi!!!");
         }
         user.setOtpCode(code);
