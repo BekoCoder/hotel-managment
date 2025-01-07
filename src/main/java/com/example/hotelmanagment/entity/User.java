@@ -37,6 +37,8 @@ public class User extends AbstractEntity implements Serializable, UserDetails {
     @Enumerated(value = EnumType.STRING)
     private List<UserRoles> roles;
 
+    Integer otpCode;
+
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Order> order = new ArrayList<>();

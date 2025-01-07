@@ -1,9 +1,6 @@
 package com.example.hotelmanagment.service.impl;
 
-import com.example.hotelmanagment.dto.JwtRequestDto;
-import com.example.hotelmanagment.dto.JwtResponseDto;
-import com.example.hotelmanagment.dto.ResponseDto;
-import com.example.hotelmanagment.dto.UserDto;
+import com.example.hotelmanagment.dto.*;
 import com.example.hotelmanagment.entity.User;
 import com.example.hotelmanagment.enumeration.UserRoles;
 import com.example.hotelmanagment.exceptions.CustomException;
@@ -16,7 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,6 +120,48 @@ public class UserServiceImpl implements UserService {
         throw new CustomException("Foydalanuvchi topilmadi!!!");
     }
 
+    @Override
+    public ResponseDto<UserDto> forgotPassword(ForgotPasswordDto forgotPasswordDto) {
+        ResponseDto<UserDto> responseDto = new ResponseDto<>();
+        User user = userRepository.findByEmail(forgotPasswordDto.getEmail()).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
+        if (Objects.isNull(user) || user.getIsDeleted() == 1) {
+            throw new CustomException("Foydalanuvchi topilmadi!!!");
+        }
+        if (forgotPasswordDto.getOtpCode() == user.getOtpCode()) {
+            user.setPassword(passwordEncoder.encode(forgotPasswordDto.getNewPassword()));
+            userRepository.save(user);
+            responseDto.setSuccess(true);
+            responseDto.setMessage("Parol o'zgartirildi");
+            responseDto.setRecordsTotal(1L);
+            responseDto.setData(mapper.map(user, UserDto.class));
+            return responseDto;
+        }
+        throw new CustomException("Kod noto'g'ri kiritildi!!!");
+
+
+    }
+
+    @Override
+    public ResponseDto<String> sendOtp(String email) {
+        ResponseDto<String> responseDto = new ResponseDto<>();
+        Random random = new Random();
+        int lower = (int) Math.pow(10, 3);
+        int upper = (int) Math.pow(10, 4);
+        int code = random.nextInt(upper - lower) + lower;
+        System.out.println(code);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
+        if(user.getIsDeleted()==1){
+            throw new CustomException("Foydalanuvchi topilmadi!!!");
+        }
+        user.setOtpCode(code);
+        userRepository.save(user);
+
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Kod yuborildi");
+        responseDto.setRecordsTotal(1L);
+        responseDto.setData("Kod: " + code);
+        return responseDto;
+    }
 
     private boolean checkPassword(String password) {
         return password.length() >= 5 && password.length() <= 16;

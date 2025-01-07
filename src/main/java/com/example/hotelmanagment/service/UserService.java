@@ -1,9 +1,6 @@
 package com.example.hotelmanagment.service;
 
-import com.example.hotelmanagment.dto.JwtRequestDto;
-import com.example.hotelmanagment.dto.JwtResponseDto;
-import com.example.hotelmanagment.dto.ResponseDto;
-import com.example.hotelmanagment.dto.UserDto;
+import com.example.hotelmanagment.dto.*;
 
 import java.util.List;
 
@@ -20,5 +17,9 @@ public interface UserService {
 
     ResponseDto<UserDto> getUserById(Long id);
 
+    ResponseDto<UserDto> forgotPassword(ForgotPasswordDto forgotPasswordDto);
+
+
+    ResponseDto<String> sendOtp(String email);
 
 }

@@ -1,5 +1,6 @@
 package com.example.hotelmanagment.controller;
 
+import com.example.hotelmanagment.dto.ForgotPasswordDto;
 import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.dto.UserDto;
 import com.example.hotelmanagment.service.UserService;
@@ -51,6 +52,19 @@ public class AdminController {
     @GetMapping("/get-all")
     public ResponseEntity<List<UserDto>> getAll() {
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+
+    @Operation(summary = "Parolni qayta tiklash")
+    @PostMapping("/reset-password")
+    public ResponseEntity<ResponseDto<UserDto>> resetPassword(@RequestBody ForgotPasswordDto forgotPasswordDto){
+        return ResponseEntity.ok(userService.forgotPassword(forgotPasswordDto));
+    }
+
+    @Operation(summary = "OTP yuborish")
+    @PostMapping("/send-otp")
+    public ResponseEntity<ResponseDto<String>> sendOtp(@RequestParam(value = "email") String email){
+        return ResponseEntity.ok(userService.sendOtp(email));
     }
 
 }
