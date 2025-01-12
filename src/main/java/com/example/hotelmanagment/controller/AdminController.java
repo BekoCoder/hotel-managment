@@ -1,6 +1,7 @@
 package com.example.hotelmanagment.controller;
 
 import com.example.hotelmanagment.dto.ForgotPasswordDto;
+import com.example.hotelmanagment.dto.OtpRequestDto;
 import com.example.hotelmanagment.dto.ResponseDto;
 import com.example.hotelmanagment.dto.UserDto;
 import com.example.hotelmanagment.service.UserService;
@@ -63,8 +64,8 @@ public class AdminController {
 
     @Operation(summary = "OTP yuborish")
     @PostMapping("/send-otp")
-    public ResponseEntity<ResponseDto<String>> sendOtp(@RequestParam(value = "email") String email){
-        return ResponseEntity.ok(userService.sendOtp(email));
+    public ResponseEntity<ResponseDto<String>> sendOtp(@RequestBody OtpRequestDto dto){
+        return ResponseEntity.ok(userService.sendOtp(dto));
     }
 
 }

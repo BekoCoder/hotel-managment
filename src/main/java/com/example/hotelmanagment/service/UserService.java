@@ -20,6 +20,6 @@ public interface UserService {
     ResponseDto<UserDto> forgotPassword(ForgotPasswordDto forgotPasswordDto);
 
 
-    ResponseDto<String> sendOtp(String email);
+    ResponseDto<String> sendOtp(OtpRequestDto dto);
 
 }

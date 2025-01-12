@@ -13,12 +13,30 @@ spring:
       hibernate:
         format_sql: true
     database: postgresql
+  mail:
+    host: smtp.office365.com
+    port: 587
+    username: bekzodmirzayev1204@outlook.com
+    password: pqdnpxasuhoessou
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+
 
 
 jwt:
- token:
-   secret: f9b62abb0dcc765f03c0efff7a8e0ee4b31017fce3672c3eb56c296803bf643c50b1cb55080ef405b140f92710702fc932284eeac227e46689ef72994c68cc0c
-   token_validity: 86400000
+  token:
+    secret: f9b62abb0dcc765f03c0efff7a8e0ee4b31017fce3672c3eb56c296803bf643c50b1cb55080ef405b140f92710702fc932284eeac227e46689ef72994c68cc0c
+    token_validity: 86400000
 
 server:
   servlet:

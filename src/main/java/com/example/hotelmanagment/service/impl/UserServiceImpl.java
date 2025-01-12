@@ -9,6 +9,9 @@ import com.example.hotelmanagment.repository.UserRepository;
 import com.example.hotelmanagment.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +24,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    @Value("${spring.mail.username}")
+    private String fromAccount;
+
     private final UserRepository userRepository;
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final JavaMailSender javaMailSender;
 
 
     @Override
@@ -142,17 +149,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseDto<String> sendOtp(String email) {
+    public ResponseDto<String> sendOtp(OtpRequestDto dto) {
+        SimpleMailMessage message = new SimpleMailMessage();
         ResponseDto<String> responseDto = new ResponseDto<>();
         Random random = new Random();
         int lower = (int) Math.pow(10, 3);
         int upper = (int) Math.pow(10, 4);
         int code = random.nextInt(upper - lower) + lower;
         System.out.println(code);
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
         if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi topilmadi!!!");
         }
+        message.setFrom(fromAccount);
+        message.setTo(dto.getEmail());
+        message.setSubject("Parolni tiklash");
+        message.setText("OTP parolingiz: " + code);
+        javaMailSender.send(message);
         user.setOtpCode(code);
         userRepository.save(user);
 

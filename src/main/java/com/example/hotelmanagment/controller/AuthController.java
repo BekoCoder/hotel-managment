@@ -25,9 +25,8 @@ public class AuthController {
 
     @Operation(summary = "Ro'yhatdan o'tish")
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserDto userDto) {
-        userService.save(userDto);
-        return new ResponseEntity<>("Muvaffaqiyatli ro'yhatdan o'tdingiz", HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto<UserDto>> register(@RequestBody UserDto userDto) {
+        return  ResponseEntity.ok(userService.save(userDto));
     }
 
     @Operation(summary = "Login")
