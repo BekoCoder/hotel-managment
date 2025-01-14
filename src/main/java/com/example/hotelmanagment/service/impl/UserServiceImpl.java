@@ -161,8 +161,8 @@ public class UserServiceImpl implements UserService {
         if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi topilmadi!!!");
         }
-        message.setFrom(fromAccount);
         message.setTo(dto.getEmail());
+        message.setFrom(fromAccount);
         message.setSubject("Parolni tiklash");
         message.setText("OTP parolingiz: " + code);
         javaMailSender.send(message);
@@ -170,9 +170,8 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         responseDto.setSuccess(true);
-        responseDto.setMessage("Kod yuborildi");
+        responseDto.setMessage("Emailinggizga kod yuborildi");
         responseDto.setRecordsTotal(1L);
-        responseDto.setData("Kod: " + code);
         return responseDto;
     }
 

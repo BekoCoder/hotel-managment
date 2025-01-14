@@ -14,10 +14,10 @@ spring:
         format_sql: true
     database: postgresql
   mail:
-    host: smtp.office365.com
-    port: 587
-    username: bekzodmirzayev1204@outlook.com
-    password: pqdnpxasuhoessou
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 4e5e6d4cf3bb95
+    password: 3d2976e5623efe
     protocol: smtp
     properties:
       mail:
