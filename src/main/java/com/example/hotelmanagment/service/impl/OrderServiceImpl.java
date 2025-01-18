@@ -90,13 +90,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void delete(Long id) {
+    public ResponseDto<String> delete(Long id) {
+        ResponseDto<String> responseDto = new ResponseDto<>();
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Buyurtma topilmadi !!!"));
         if (Objects.isNull(order) || order.getIsDeleted() == 1) {
             throw new OrderNotFoundException("Buyurtma topilmadi !!!");
         }
         order.setIsDeleted(1);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Buyurtma o'chirildi");
+        responseDto.setRecordsTotal(1L);
         orderRepository.save(order);
+        return responseDto;
     }
 
     @Override

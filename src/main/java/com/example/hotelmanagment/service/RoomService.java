@@ -13,7 +13,7 @@ public interface RoomService {
 
     ResponseDto<RoomDto> update(RoomDto roomDto, Long id);
 
-    void delete(Long id);
+    ResponseDto<String> delete(Long id);
 
     ResponseDto<RoomDto> addRoomToHotel(Long hotelId, Long roomId);
 

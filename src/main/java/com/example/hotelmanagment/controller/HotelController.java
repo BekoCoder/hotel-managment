@@ -55,10 +55,9 @@ public class HotelController {
 
     @Operation(summary = "Id orqali o'chirish")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseDto<String>> delete(@PathVariable("id") Long id) {
         log.trace("Accessing Delete /hotel/delete/{}", id);
-        hotelService.deleteById(id);
-        return ResponseEntity.ok(Boolean.TRUE);
+        return ResponseEntity.ok(hotelService.deleteById(id));
     }
 
 }

@@ -33,10 +33,9 @@ public class AdminController {
 
     @Operation(summary = "id orqali o'chirish")
     @DeleteMapping("/delete-by-id/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<String >> deleteById(@PathVariable Long id) {
         log.trace("Accessing DELETE /admin/delete-by-id/{}", id);
-        userService.deleteById(id);
-        return ResponseEntity.ok(Boolean.TRUE);
+        return ResponseEntity.ok(userService.deleteById(id));
     }
 
     @Operation(summary = "Id orqali userni olish")
@@ -58,13 +57,13 @@ public class AdminController {
 
     @Operation(summary = "Parolni qayta tiklash")
     @PostMapping("/reset-password")
-    public ResponseEntity<ResponseDto<UserDto>> resetPassword(@RequestBody ForgotPasswordDto forgotPasswordDto){
+    public ResponseEntity<ResponseDto<UserDto>> resetPassword(@RequestBody ForgotPasswordDto forgotPasswordDto) {
         return ResponseEntity.ok(userService.forgotPassword(forgotPasswordDto));
     }
 
     @Operation(summary = "OTP yuborish")
     @PostMapping("/send-otp")
-    public ResponseEntity<ResponseDto<String>> sendOtp(@RequestBody OtpRequestDto dto){
+    public ResponseEntity<ResponseDto<String>> sendOtp(@RequestBody OtpRequestDto dto) {
         return ResponseEntity.ok(userService.sendOtp(dto));
     }
 

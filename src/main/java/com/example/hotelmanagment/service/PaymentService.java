@@ -10,7 +10,7 @@ public interface PaymentService {
 
     ResponseDto<PaymentDto> updatePayment(PaymentDto paymentDto, Long id);
 
-    void deleteById(Long id);
+    ResponseDto<String> deleteById(Long id);
 
     ResponseDto<PaymentDto> getPaymentById(Long id);
 

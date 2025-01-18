@@ -13,12 +13,11 @@ public interface UserService {
 
     List<UserDto> getAllUsers();
 
-    void deleteById(Long id);
+    ResponseDto<String> deleteById(Long id);
 
     ResponseDto<UserDto> getUserById(Long id);
 
     ResponseDto<UserDto> forgotPassword(ForgotPasswordDto forgotPasswordDto);
-
 
     ResponseDto<String> sendOtp(OtpRequestDto dto);
 

@@ -104,13 +104,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public ResponseDto<String> deleteById(Long id) {
+        ResponseDto<String> responseDto = new ResponseDto<>();
         User user = userRepository.findById(id).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
         if (user.getIsDeleted() == 1) {
             throw new CustomException("Foydalanuvchi o'chirilgan!!!");
         }
         user.setIsDeleted(1);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Foydalanuvchi muvafaqqiyatili o'chirdi !!!");
+        responseDto.setRecordsTotal(1L);
         userRepository.save(user);
+        return responseDto;
     }
 
     @Override

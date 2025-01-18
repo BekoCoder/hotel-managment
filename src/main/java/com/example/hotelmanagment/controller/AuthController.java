@@ -8,7 +8,6 @@ import com.example.hotelmanagment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +25,7 @@ public class AuthController {
     @Operation(summary = "Ro'yhatdan o'tish")
     @PostMapping("/register")
     public ResponseEntity<ResponseDto<UserDto>> register(@RequestBody UserDto userDto) {
-        return  ResponseEntity.ok(userService.save(userDto));
+        return ResponseEntity.ok(userService.save(userDto));
     }
 
     @Operation(summary = "Login")

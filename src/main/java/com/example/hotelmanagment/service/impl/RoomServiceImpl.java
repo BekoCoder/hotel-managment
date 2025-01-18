@@ -79,13 +79,18 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void delete(Long id) {
+    public ResponseDto<String> delete(Long id) {
+        ResponseDto<String> responseDto = new ResponseDto<>();
         Room room = roomRepository.findById(id).orElseThrow(() -> new CustomException("Bunday xona topilmadi!!!"));
         if (Objects.isNull(room)) {
             throw new RoomNotFoundException("Bunday xona topilmadi!!! ");
         }
         room.setIsDeleted(1);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Xona o'chirildi");
+        responseDto.setRecordsTotal(1L);
         roomRepository.save(room);
+        return responseDto;
     }
 
     @Override

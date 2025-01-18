@@ -12,7 +12,7 @@ public interface HotelService {
 
     ResponseDto<HotelDto> getById(Long id);
 
-    void deleteById(Long id);
+    ResponseDto<String > deleteById(Long id);
 
     ResponseDto<HotelDto> updateById(Long id, HotelDto hotelDto);
 

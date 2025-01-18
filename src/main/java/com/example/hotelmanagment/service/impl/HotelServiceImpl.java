@@ -57,13 +57,18 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public ResponseDto<String> deleteById(Long id) {
+        ResponseDto<String> responseDto = new ResponseDto<>();
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Mehmonxona topilmadi!!!"));
         if (Objects.isNull(hotel)) {
             throw new HotelNotFoundException("Mehmonxona topilmadi!!!");
         }
+        responseDto.setSuccess(true);
+        responseDto.setMessage("Mehmonxona o'chirildi");
+        responseDto.setRecordsTotal(1L);
         hotel.setIsDeleted(1);
         hotelRepository.save(hotel);
+        return responseDto;
     }
 
     @Override
@@ -83,7 +88,7 @@ public class HotelServiceImpl implements HotelService {
         responseDto.setMessage("Mehmonxona o'zgartirildi");
         responseDto.setRecordsTotal(1L);
         responseDto.setData(mapper.map(hotelRepository.save(hotel), HotelDto.class));
-        return  responseDto;
+        return responseDto;
     }
 
     private boolean isExistHotel(String name) {

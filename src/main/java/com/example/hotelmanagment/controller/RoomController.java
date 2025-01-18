@@ -54,10 +54,9 @@ public class RoomController {
 
     @Operation(summary = "id orqali o'chirish")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteRoom(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<String>> deleteRoom(@PathVariable Long id) {
         log.trace("Accessing Room /room/delete/{}", id);
-        roomService.delete(id);
-        return ResponseEntity.ok(Boolean.TRUE);
+        return ResponseEntity.ok(roomService.delete(id));
     }
 
     @Operation(summary = "xonalarni mehmonxonaga biriktirish")

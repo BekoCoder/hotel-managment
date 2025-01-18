@@ -47,9 +47,8 @@ public class PaymentController {
 
     @Operation(summary = "Id orqali olish")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePayment(@PathVariable Long id) {
-        paymentService.deleteById(id);
-        return ResponseEntity.ok(Boolean.TRUE);
+    public ResponseEntity<ResponseDto<String>> deletePayment(@PathVariable Long id) {
+        return ResponseEntity.ok(paymentService.deleteById(id));
     }
 
 }

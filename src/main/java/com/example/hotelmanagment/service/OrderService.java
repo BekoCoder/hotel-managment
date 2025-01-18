@@ -12,7 +12,7 @@ public interface OrderService {
 
     ResponseDto<OrderDto> update(Long id, OrderDto orderDto);
 
-    void delete(Long id);
+    ResponseDto<String> delete(Long id);
 
     Page<OrderDto> getAll(Pageable pageable);
 

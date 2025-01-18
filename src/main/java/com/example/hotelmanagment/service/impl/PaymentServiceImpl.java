@@ -47,13 +47,18 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public ResponseDto<String> deleteById(Long id) {
+        ResponseDto<String> responseDto = new ResponseDto<>();
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("To'lov topilmadi"));
         if (Objects.isNull(payment) || payment.getIsDeleted() == 1) {
             throw new RuntimeException("To'lov topilmadi");
         }
         payment.setIsDeleted(1);
+        responseDto.setSuccess(true);
+        responseDto.setMessage("To'lov o'chirildi");
+        responseDto.setRecordsTotal(1L);
         paymentRepository.save(payment);
+        return responseDto;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
         responseDto.setMessage("To'lov topildi");
         responseDto.setRecordsTotal(1L);
         responseDto.setData(mapper.map(payment, PaymentDto.class));
-        return  responseDto;
+        return responseDto;
     }
 
     @Override
