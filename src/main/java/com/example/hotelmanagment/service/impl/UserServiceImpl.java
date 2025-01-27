@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
         System.out.println(code);
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new CustomException("Foydalanuvchi topilmadi!!!"));
         if (user.getIsDeleted() == 1) {
-            throw new CustomException("Foydalanuvchi topilmadi!!!");
+            throw new CustomException("Foydalanuvchi o'chirilgan!!!");
         }
         message.setTo(dto.getEmail());
         message.setFrom(fromAccount);
